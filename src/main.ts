@@ -1,20 +1,5 @@
 import { ComicData } from './types.js';
-// import { formatDistanceToNow } from 'date-fns';
-
-// function displayComic(comicData: ComicData): void {
-//   const title = document.getElementById("title");
-//   const imgElement = document.getElementById("image");
-//   const date = document.getElementById("date");
-
-//   if (title && imgElement && date) {
-//     title.textContent = comicData.safe_title;
-//     imgElement.src = comicData.img;
-//     imgElement.alt = comicData.alt;
-
-//     const comicDate = new Date(`${comicData.year}-${comicData.month}-${comicData.day}`);
-//     date.textContent = formatDistanceToNow(comicDate, { addSuffix: true });
-//   }
-// }
+import { formatDistanceToNow } from 'date-fns';
 
 const getSomeThingBtn = document.getElementById("getsmthBtn") as HTMLButtonElement;
 const imgElement = document.getElementById("image") as HTMLImageElement;
@@ -24,6 +9,23 @@ const date = document.getElementById("date") as HTMLParagraphElement;
 const comicContainer = document.getElementById("comicContainer") as HTMLDivElement;
 const errElement = document.getElementById("err") as HTMLParagraphElement;
 
+function displayComic(comicData: ComicData): void {
+  const title = document.getElementById("title");
+  const imgElement = document.getElementById("image") as HTMLImageElement;
+  const date = document.getElementById("date");
+
+  if (title && imgElement && date) {
+    title.textContent = comicData.safe_title;
+    imgElement.src = comicData.img;
+    imgElement.alt = comicData.alt;
+
+    const comicDate = new Date(`${comicData.year}-${comicData.month}-${comicData.day}`);
+    date.textContent = formatDistanceToNow(comicDate, { addSuffix: true });
+  }
+}
+
+
+
 async function fetchIdentifier(email: string): Promise<string> {
   const params = new URLSearchParams({ email });
   const response = await fetch(
@@ -32,7 +34,7 @@ async function fetchIdentifier(email: string): Promise<string> {
   if (!response.ok) {
     throw new Error("Failed to fetch identifier");
   }
-  return response.text();
+  return response.json();
 }
 
 async function fetchComic(comic_id: string): Promise<ComicData> {
